@@ -4,3 +4,5 @@ praw==7.7.1
 textblob==0.18.0.post0
 youtube-transcript-api==0.6.2
 matplotlib==3.9.0
+gunicorn==23.0.0
+packaging==24.1
