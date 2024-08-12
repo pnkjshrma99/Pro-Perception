@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Register</title>
     <style>
         body {
             background-image: url('../static/images/p.png');
@@ -20,7 +20,7 @@
             font-family: Arial, sans-serif;
             color: #333;
         }
-        
+
         .container {
             background-color: #fff;
             padding: 30px 40px;
@@ -30,24 +30,25 @@
             max-width: 400px;
             text-align: center;
         }
-        
+
         h1 {
             margin-bottom: 20px;
             font-size: 24px;
             color: #333;
         }
-        
+
         .form-group {
             margin-bottom: 15px;
             text-align: left;
+
         }
-        
+
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
-        
+
         input {
             width: 100%;
             padding: 10px;
@@ -56,7 +57,7 @@
             border-radius: 4px;
             box-sizing: border-box; /* Include padding and border in width */
         }
-        
+
         .btn {
             background-color: #007bff;
             color: #fff;
@@ -68,15 +69,15 @@
             transition: background-color 0.3s ease, transform 0.3s ease;
             width: 100%;
         }
-        
+
         .btn:hover {
             background-color: #0056b3;
         }
-        
+
         .btn:active {
             background-color: #004080;
         }
-        
+
         .register-link {
             display: block;
             margin-top: 15px;
@@ -84,17 +85,16 @@
             text-decoration: none;
             font-weight: bold;
         }
-        
+
         .register-link:hover {
             text-decoration: underline;
         }
-        
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Login</h1>
+        <h1>Register</h1>
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <div class="form-group">
@@ -112,7 +112,7 @@
                 <a href="{{ url_for('index') }}" class="register-link" >Continue as Guest</a>
             </div>
         </form>
-        <a href="{{ url_for('register') }}">Don't have an account? Sign Up</a>
+        <a href="{{ url_for('login') }}">Already have an account? Log In</a>
     </div>
 </body>
 
