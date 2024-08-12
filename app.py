@@ -260,4 +260,9 @@ def results():
     return render_template('results.html', keyword=keyword, data=data, sentiment_scores=sentiment_scores, time_series_sentiment_scores=time_series_sentiment_scores, time_labels=time_labels)
 
 
+<<<<<<< HEAD
 
+=======
+if __name__ == '__main__':
+    app.run()
+>>>>>>> d315ba6861325a5fb67b00c139c157cdd2c74d78
