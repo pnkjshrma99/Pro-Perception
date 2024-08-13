@@ -112,7 +112,6 @@ def index():
     return render_template('index.html')
 
 
-
 @app.route('/text.html')
 def text():
     return render_template('text.html')
