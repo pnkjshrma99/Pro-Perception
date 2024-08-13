@@ -107,15 +107,6 @@ reddit = praw.Reddit(
     username="nema_harsh" 
 )
 
-@app.route('/register.html')
-def index():
-    return render_template('register.html')
-
-
-@app.route('/login.html')
-def index():
-    return render_template('login.html')
-
 
 @app.route('/')
 def index():
