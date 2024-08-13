@@ -147,117 +147,117 @@ def youtube():
     return render_template('youtube.html')
 
 
-def check_word(word,data):
-    contains=data['title'].str.contains(word,case=False)
-    return contains
+# def check_word(word,data):
+#     contains=data['title'].str.contains(word,case=False)
+#     return contains
 
-def get_sentiment(title):
-    sid = SentimentIntensityAnalyzer()
-    return sid.polarity_scores(title)['compound']
-
-
-@app.route('/analyze_sentiment', methods=['POST'])
-def analyze_sentiment():
-    text = request.form.get('user-input')
-    sentiment_score = perform_sentiment_analysis(text)
-    return jsonify(sentiment_score)
-
-def perform_sentiment_analysis(text):
-    analyzer = SentimentIntensityAnalyzer()
-    sentiment_score = analyzer.polarity_scores(text)
-    return sentiment_score
+# def get_sentiment(title):
+#     sid = SentimentIntensityAnalyzer()
+#     return sid.polarity_scores(title)['compound']
 
 
+# @app.route('/analyze_sentiment', methods=['POST'])
+# def analyze_sentiment():
+#     text = request.form.get('user-input')
+#     sentiment_score = perform_sentiment_analysis(text)
+#     return jsonify(sentiment_score)
 
-@app.route('/custom_analyze', methods=['POST'])
-def custom_analyze():
-    try:
-        data = request.get_json()
-        url = data['url']
+# def perform_sentiment_analysis(text):
+#     analyzer = SentimentIntensityAnalyzer()
+#     sentiment_score = analyzer.polarity_scores(text)
+#     return sentiment_score
+
+
+
+# @app.route('/custom_analyze', methods=['POST'])
+# def custom_analyze():
+#     try:
+#         data = request.get_json()
+#         url = data['url']
 
       
-        def get_transcript(url):
-            video_id = url.split("v=")[1]
-            transcript = YouTubeTranscriptApi.get_transcript(video_id)
-            return transcript
+#         def get_transcript(url):
+#             video_id = url.split("v=")[1]
+#             transcript = YouTubeTranscriptApi.get_transcript(video_id)
+#             return transcript
 
-        def analyze_sentiment1(transcript):
-            text = ' '.join([entry['text'] for entry in transcript])
-            blob = TextBlob(text)
-            sentiment = {
-                'neg': blob.sentiment.polarity if blob.sentiment.polarity < 0 else 0,
-                'neu': 0, 
-                'pos': blob.sentiment.polarity if blob.sentiment.polarity > 0 else 0,
-                'compound': blob.sentiment.polarity
-            }
-            return sentiment
+#         def analyze_sentiment1(transcript):
+#             text = ' '.join([entry['text'] for entry in transcript])
+#             blob = TextBlob(text)
+#             sentiment = {
+#                 'neg': blob.sentiment.polarity if blob.sentiment.polarity < 0 else 0,
+#                 'neu': 0, 
+#                 'pos': blob.sentiment.polarity if blob.sentiment.polarity > 0 else 0,
+#                 'compound': blob.sentiment.polarity
+#             }
+#             return sentiment
 
-        transcript = get_transcript(url)
-        if transcript:
-            sentiment_score = analyze_sentiment1(transcript)
-            return jsonify(sentiment_score)
-        else:
-            return jsonify({'error': 'Transcript not available for this video.'}), 400
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-
+#         transcript = get_transcript(url)
+#         if transcript:
+#             sentiment_score = analyze_sentiment1(transcript)
+#             return jsonify(sentiment_score)
+#         else:
+#             return jsonify({'error': 'Transcript not available for this video.'}), 400
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500
 
 
 
 
 
-@app.route('/results.html', methods=['POST'])
-def results():
-    keyword = request.form['keyword'].strip()
-    if not keyword:
-        return "Error: No keyword provided.", 400  
+
+
+# @app.route('/results.html', methods=['POST'])
+# def results():
+#     keyword = request.form['keyword'].strip()
+#     if not keyword:
+#         return "Error: No keyword provided.", 400  
 
   
-    search_results = reddit.subreddits.search(keyword, limit=1)
-    subreddit_name = None
+#     search_results = reddit.subreddits.search(keyword, limit=1)
+#     subreddit_name = None
 
-    for result in search_results:
-        subreddit_name = result.display_name
-        break
+#     for result in search_results:
+#         subreddit_name = result.display_name
+#         break
 
-    if not subreddit_name:
-        return "Error: No matching subreddit found.", 400
+#     if not subreddit_name:
+#         return "Error: No matching subreddit found.", 400
 
-    try:
-        subreddit = reddit.subreddit(subreddit_name)
-    except Exception as e:
-        return f"Error: {str(e)}", 400  
+#     try:
+#         subreddit = reddit.subreddit(subreddit_name)
+#     except Exception as e:
+#         return f"Error: {str(e)}", 400  
 
-    new_data_list = []
-    time_series_sentiment_scores = []
-    time_labels = []
+#     new_data_list = []
+#     time_series_sentiment_scores = []
+#     time_labels = []
 
-    for post in subreddit.hot(limit=90):
-        sentiment_score = perform_sentiment_analysis(post.title)
-        new_data_list.append({
-            "title": post.title,
-            "author": post.author,
-            "link": post.shortlink,
-            "comment_ID": post.id,
-            "time": datetime.datetime.fromtimestamp(post.created_utc)
-        })
-        time_series_sentiment_scores.append(sentiment_score['compound'])
-        time_labels.append(datetime.datetime.fromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S'))
+#     for post in subreddit.hot(limit=90):
+#         sentiment_score = perform_sentiment_analysis(post.title)
+#         new_data_list.append({
+#             "title": post.title,
+#             "author": post.author,
+#             "link": post.shortlink,
+#             "comment_ID": post.id,
+#             "time": datetime.datetime.fromtimestamp(post.created_utc)
+#         })
+#         time_series_sentiment_scores.append(sentiment_score['compound'])
+#         time_labels.append(datetime.datetime.fromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S'))
 
-    field_names = ["title", "author", "link", "comment_ID", "time"]
-    with open('product_sales.csv', 'w', newline='', encoding="utf-8") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=field_names)
-        writer.writeheader()
-        writer.writerows(new_data_list)
+#     field_names = ["title", "author", "link", "comment_ID", "time"]
+#     with open('product_sales.csv', 'w', newline='', encoding="utf-8") as csvfile:
+#         writer = csv.DictWriter(csvfile, fieldnames=field_names)
+#         writer.writeheader()
+#         writer.writerows(new_data_list)
     
-    with open('product_sales.csv', 'r', encoding='utf-8') as csvfile:
-        csvreader = csv.DictReader(csvfile)
-        data = list(csvreader)
+#     with open('product_sales.csv', 'r', encoding='utf-8') as csvfile:
+#         csvreader = csv.DictReader(csvfile)
+#         data = list(csvreader)
     
-    sentiment_scores = [0.1, 0.5, 0.4, 0.2] 
+#     sentiment_scores = [0.1, 0.5, 0.4, 0.2] 
 
-    return render_template('results.html', keyword=keyword, data=data, sentiment_scores=sentiment_scores, time_series_sentiment_scores=time_series_sentiment_scores, time_labels=time_labels)
+#     return render_template('results.html', keyword=keyword, data=data, sentiment_scores=sentiment_scores, time_series_sentiment_scores=time_series_sentiment_scores, time_labels=time_labels)
 
 
 if __name__ == '__main__':
