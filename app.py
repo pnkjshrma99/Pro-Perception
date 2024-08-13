@@ -166,19 +166,18 @@ def custom_analyze():
         data = request.get_json()
         url = data['url']
 
-        # Define get_transcript function
+      
         def get_transcript(url):
             video_id = url.split("v=")[1]
             transcript = YouTubeTranscriptApi.get_transcript(video_id)
             return transcript
 
-        # Define analyze_sentiment1 function
         def analyze_sentiment1(transcript):
             text = ' '.join([entry['text'] for entry in transcript])
             blob = TextBlob(text)
             sentiment = {
                 'neg': blob.sentiment.polarity if blob.sentiment.polarity < 0 else 0,
-                'neu': 0,  # Neutral can be calculated based on sentiment score ranges if needed
+                'neu': 0, 
                 'pos': blob.sentiment.polarity if blob.sentiment.polarity > 0 else 0,
                 'compound': blob.sentiment.polarity
             }
@@ -203,9 +202,9 @@ def custom_analyze():
 def results():
     keyword = request.form['keyword'].strip()
     if not keyword:
-        return "Error: No keyword provided.", 400  # Handle empty input
+        return "Error: No keyword provided.", 400  
 
-    # Search for subreddits
+  
     search_results = reddit.subreddits.search(keyword, limit=1)
     subreddit_name = None
 
@@ -219,7 +218,7 @@ def results():
     try:
         subreddit = reddit.subreddit(subreddit_name)
     except Exception as e:
-        return f"Error: {str(e)}", 400  # Handle invalid subreddit or other errors
+        return f"Error: {str(e)}", 400  
 
     new_data_list = []
     time_series_sentiment_scores = []
@@ -247,8 +246,7 @@ def results():
         csvreader = csv.DictReader(csvfile)
         data = list(csvreader)
     
-    # Example sentiment scores
-    sentiment_scores = [0.1, 0.5, 0.4, 0.2]  # Replace with actual sentiment scores
+    sentiment_scores = [0.1, 0.5, 0.4, 0.2] 
 
     return render_template('results.html', keyword=keyword, data=data, sentiment_scores=sentiment_scores, time_series_sentiment_scores=time_series_sentiment_scores, time_labels=time_labels)
 
