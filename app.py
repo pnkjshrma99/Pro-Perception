@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
-# analyzer = SentimentIntensityAnalyzer()
+analyzer = SentimentIntensityAnalyzer()
 
 
 # bcrypt = Bcrypt(app)
@@ -260,5 +260,3 @@ def youtube():
 #     return render_template('results.html', keyword=keyword, data=data, sentiment_scores=sentiment_scores, time_series_sentiment_scores=time_series_sentiment_scores, time_labels=time_labels)
 
 
-if __name__ == '__main__':
-    app.run()
