@@ -13,6 +13,10 @@ from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
+
+
+import nltk
+nltk.download('vader_lexicon')
 analyzer = SentimentIntensityAnalyzer()
 
 
