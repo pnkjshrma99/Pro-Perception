@@ -1,10 +1,8 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import praw as praw
-import pandas as pd
 import csv
 import datetime
-import matplotlib.pyplot as plt
 from youtube_transcript_api import YouTubeTranscriptApi
 from textblob import TextBlob
 from flask_sqlalchemy import SQLAlchemy
@@ -100,11 +98,6 @@ def register():
 
     return render_template('register.html', form=form)
 
-
-
-
-import nltk
-nltk.download('vader_lexicon')
 
 reddit = praw.Reddit(
     client_id="mG0s_3OPp0QR85VVULmUDw",
