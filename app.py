@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
-analyzer = SentimentIntensityAnalyzer()
+# analyzer = SentimentIntensityAnalyzer()
 
 
 # bcrypt = Bcrypt(app)
@@ -99,13 +99,13 @@ analyzer = SentimentIntensityAnalyzer()
 #     return render_template('register.html', form=form)
 
 
-reddit = praw.Reddit(
-    client_id="mG0s_3OPp0QR85VVULmUDw",
-    client_secret="TeNFxx-MeKinFbmTkfuh6sO_NpE5JA",
-    password="Harshnema1234",
-    user_agent="sentiment",
-    username="nema_harsh" 
-)
+# reddit = praw.Reddit(
+#     client_id="mG0s_3OPp0QR85VVULmUDw",
+#     client_secret="TeNFxx-MeKinFbmTkfuh6sO_NpE5JA",
+#     password="Harshnema1234",
+#     user_agent="sentiment",
+#     username="nema_harsh" 
+# )
 
 # @app.route('/register.html')
 # def index():
