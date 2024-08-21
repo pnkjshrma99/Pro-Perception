@@ -69,7 +69,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 
-@app.route('/login.html', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -112,7 +112,7 @@ reddit = praw.Reddit(
 )
 
 
-@app.route('/')
+@app.route('/index.html')
 def index():
     return render_template('index.html')
 
