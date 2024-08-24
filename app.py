@@ -11,6 +11,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
+import os
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 
 
