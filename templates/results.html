@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title %}Results for "{{ keyword }}"{% endblock %}
+{% block content %}
+<section class="section" style="padding-top: 120px;">
+  <div class="container">
+    <div class="results-header fade-in">
+      <span class="badge badge-accent">Analysis Results</span>
+      <h2>Sentiment Analysis: <span class="keyword-badge">{{ keyword }}</span></h2>
+      <p>Real-time social media sentiment intelligence powered by VADER + Reddit API</p>
+    </div>
+
+    {% if error %}
+      <div class="empty-state fade-in">
+        <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+        <h3>Analysis Failed</h3>
+        <p>{{ error }}</p>
+        <a href="{{ url_for('service') }}" class="btn btn-primary">Try Again</a>
+      </div>
+    {% elif data %}
+      <!-- Sentiment Summary -->
+      <div class="stats-grid" style="margin-bottom: 48px;">
+        <div class="stat-item fade-in">
+          <div class="stat-number gradient-text">{{ sentiment_scores[0] }}%</div>
+          <div class="stat-label">Negative</div>
+        </div>
+        <div class="stat-item fade-in fade-in-delay-1">
+          <div class="stat-number gradient-text">{{ sentiment_scores[1] }}%</div>
+          <div class="stat-label">Neutral</div>
+        </div>
+        <div class="stat-item fade-in fade-in-delay-2">
+          <div class="stat-number gradient-text">{{ sentiment_scores[2] }}%</div>
+          <div class="stat-label">Positive</div>
+        </div>
+        <div class="stat-item fade-in fade-in-delay-3">
+          <div class="stat-number gradient-text">{{ sentiment_scores[3] }}</div>
+          <div class="stat-label">Avg Compound</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="chart-row">
+        <div class="chart-wrapper fade-in">
+          <h3>Sentiment Distribution</h3>
+          <canvas id="sentimentBarChart" style="max-height: 350px;"></canvas>
+        </div>
+        <div class="chart-wrapper fade-in fade-in-delay-1">
+          <h3>Sentiment Over Time</h3>
+          <canvas id="sentimentLineGraph" style="max-height: 350px;"></canvas>
+        </div>
+      </div>
+
+      <!-- Data Table -->
+      <div class="fade-in fade-in-delay-2" style="margin-top: 48px;">
+        <h3 style="margin-bottom: 16px;">Raw Data <span style="color: var(--text-muted); font-weight: 400;">({{ data|length }} posts)</span></h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Sentiment</th>
+                <th>Time</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in data %}
+              <tr>
+                <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ row['title'] }}">{{ row['title'] }}</td>
+                <td>{{ row['author'] }}</td>
+                <td>
+                  {% if row.get('sentiment') %}
+                    {% set s = row['sentiment']|float %}
+                    {% if s > 0.05 %}
+                      <span class="badge badge-success">Positive</span>
+                    {% elif s < -0.05 %}
+                      <span class="badge badge-error">Negative</span>
+                    {% else %}
+                      <span class="badge badge-warning">Neutral</span>
+                    {% endif %}
+                  {% else %}
+                    —
+                  {% endif %}
+                </td>
+                <td>{{ row['time'] }}</td>
+                <td><a href="{{ row['link'] }}" target="_blank" style="font-size: 0.875rem;">View <i class="fas fa-external-link-alt" style="font-size: 0.75rem;"></i></a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+const barCtx = document.getElementById('sentimentBarChart')?.getContext('2d');
+if (barCtx) {
+  new Chart(barCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Negative', 'Neutral', 'Positive', 'Compound'],
+      datasets: [{
+        label: 'Sentiment Score',
+        data: {{ sentiment_scores | tojson }},
+        backgroundColor: ['rgba(239,68,68,0.6)', 'rgba(107,114,128,0.6)', 'rgba(34,197,94,0.6)', 'rgba(59,130,246,0.6)'],
+        borderColor: ['#ef4444', '#6b7280', '#22c55e', '#3b82f6'],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
+
+const lineCtx = document.getElementById('sentimentLineGraph')?.getContext('2d');
+if (lineCtx) {
+  new Chart(lineCtx, {
+    type: 'line',
+    data: {
+      labels: {{ time_labels | tojson }},
+      datasets: [{
+        label: 'Compound Score',
+        data: {{ time_series_sentiment_scores | tojson }},
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59,130,246,0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3,
+        pointBackgroundColor: '#3b82f6'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#a0a0a0' } } },
+      scales: {
+        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+        x: { grid: { display: false }, ticks: { maxTicksLimit: 10, color: '#a0a0a0' } }
+      }
+    }
+  });
+}
+</script>
+{% endblock %}

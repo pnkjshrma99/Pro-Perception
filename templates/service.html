@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Social Media Monitor{% endblock %}
+{% block content %}
+<section class="section" style="padding-top: 120px;">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-accent">Social Monitoring</span>
+      <h2>On-Demand <span class="gradient-text">Sentiment Analysis</span></h2>
+      <p>Enter a keyword to analyze sentiment across Reddit communities in real-time.</p>
+    </div>
+    <div class="service-input-section fade-in fade-in-delay-1">
+      <form action="{{ url_for('results') }}" method="post">
+        <div class="form-group">
+          <label for="keyword">Enter Keyword</label>
+          <input type="text" id="keyword" name="keyword" class="form-input" placeholder="e.g., Amazon, Tesla, iPhone..." required>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <button type="submit" class="btn btn-primary btn-lg" style="flex: 1;">
+            <i class="fas fa-search"></i> Analyze Sentiment
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Live text analyzer -->
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-accent">Quick Analysis</span>
+      <h2>Text <span class="gradient-text">Analyzer</span></h2>
+      <p>Paste any text below for instant sentiment analysis with visual breakdown.</p>
+    </div>
+    <div class="service-input-section fade-in fade-in-delay-1">
+      <textarea id="user-input" class="form-textarea" placeholder="Enter any text to analyze sentiment..."></textarea>
+      <button type="button" class="btn btn-primary btn-lg" style="width: 100%;" id="analyze-button">
+        <i class="fas fa-microchip"></i> Analyze
+      </button>
+    </div>
+    <div class="chart-row" id="result-section" style="display: none;">
+      <div class="chart-wrapper">
+        <h3>Sentiment Scores</h3>
+        <canvas id="sentimentChart"></canvas>
+      </div>
+      <div class="chart-wrapper">
+        <h3>Distribution</h3>
+        <canvas id="sentimentPieChart"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+let sentimentChart, sentimentPieChart;
+
+document.getElementById('analyze-button').addEventListener('click', function() {
+  const text = document.getElementById('user-input').value;
+  if (!text.trim()) return;
+  fetch('/analyze_sentiment', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text }),
+  })
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('result-section').style.display = 'grid';
+    const ctx1 = document.getElementById('sentimentChart').getContext('2d');
+    const ctx2 = document.getElementById('sentimentPieChart').getContext('2d');
+    const vals = [data.neg, data.neu, data.pos, data.compound];
+    if (sentimentChart) {
+      sentimentChart.data.datasets[0].data = vals;
+      sentimentChart.update();
+    } else {
+      sentimentChart = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['Negative', 'Neutral', 'Positive', 'Compound'],
+          datasets: [{
+            label: 'Score',
+            data: vals,
+            backgroundColor: ['rgba(239,68,68,0.6)', 'rgba(107,114,128,0.6)', 'rgba(34,197,94,0.6)', 'rgba(59,130,246,0.6)'],
+            borderColor: ['#ef4444', '#6b7280', '#22c55e', '#3b82f6'],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } }
+        }
+      });
+    }
+    const pieVals = [Math.abs(data.neg), data.neu, Math.abs(data.pos)];
+    if (sentimentPieChart) {
+      sentimentPieChart.data.datasets[0].data = pieVals;
+      sentimentPieChart.update();
+    } else {
+      sentimentPieChart = new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+          labels: ['Negative', 'Neutral', 'Positive'],
+          datasets: [{
+            data: pieVals,
+            backgroundColor: ['rgba(239,68,68,0.8)', 'rgba(107,114,128,0.8)', 'rgba(34,197,94,0.8)'],
+            borderColor: ['#ef4444', '#6b7280', '#22c55e'],
+            borderWidth: 2
+          }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#a0a0a0' } } } }
+      });
+    }
+  });
+});
+</script>
+{% endblock %}

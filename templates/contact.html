@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Contact Us{% endblock %}
+{% block content %}
+<section class="section" style="padding-top: 120px;">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-accent">Get in Touch</span>
+      <h2>Let's Build <span class="gradient-text">Together</span></h2>
+      <p>Have a project in mind? We'd love to hear from you. Send us a message and we'll respond promptly.</p>
+    </div>
+    <div style="max-width: 560px; margin: 0 auto;" class="fade-in fade-in-delay-1">
+      <form>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" class="form-input" placeholder="John" required>
+          </div>
+          <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" class="form-input" placeholder="Doe" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" class="form-input" placeholder="john@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" class="form-textarea" placeholder="Tell us about your project..." rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+          <i class="fas fa-paper-plane"></i> Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

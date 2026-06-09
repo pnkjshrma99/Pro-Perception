@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Text Analysis{% endblock %}
+{% block content %}
+<section class="section" style="padding-top: 120px;">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-accent">Text Analysis</span>
+      <h2>Analyze <span class="gradient-text">Any Text</span></h2>
+      <p>Paste customer reviews, social media posts, or any text to get instant sentiment insights.</p>
+    </div>
+    <div class="service-input-section fade-in fade-in-delay-1">
+      <form action="{{ url_for('results') }}" method="post">
+        <div class="form-group">
+          <label for="keyword">Enter Keyword for Social Media Analysis</label>
+          <input type="text" id="keyword" name="keyword" class="form-input" placeholder="e.g., brand name, product, topic..." required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+          <i class="fas fa-globe"></i> Analyze Social Media
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

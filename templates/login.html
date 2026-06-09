@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Log In{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card fade-in">
+    <h1>Welcome back</h1>
+    <p class="subtitle">Log in to your Pro-Perception account</p>
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+        <label for="username">Username</label>
+        {{ form.username(class="form-input", id="username") }}
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        {{ form.password(class="form-input", id="password") }}
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Log in</button>
+    </form>
+    <div class="auth-divider">OR</div>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary" style="width: 100%;">Continue as Guest</a>
+    <div class="auth-link">
+      Don't have an account? <a href="{{ url_for('register') }}">Sign up</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

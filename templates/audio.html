@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Audio Analysis{% endblock %}
+{% block content %}
+<section class="section" style="padding-top: 120px;">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-accent">Audio Analysis</span>
+      <h2>Audio Sentiment <span class="gradient-text">Analysis</span></h2>
+      <p>Analyze sentiment from audio and video content using advanced transcription and NLP.</p>
+    </div>
+    <div class="service-input-section fade-in fade-in-delay-1">
+      <div class="form-group">
+        <label for="video-url">Media URL (YouTube or audio)</label>
+        <input type="text" id="video-url" class="form-input" placeholder="https://youtube.com/watch?v=...">
+      </div>
+      <button type="button" class="btn btn-primary btn-lg" style="width: 100%;" id="analyze-video-button">
+        <i class="fas fa-headphones"></i> Analyze Audio
+      </button>
+    </div>
+    <div class="chart-row" id="result-section" style="display: none; margin-top: 48px;">
+      <div class="chart-wrapper fade-in">
+        <h3>Sentiment Scores</h3>
+        <canvas id="sentimentChart"></canvas>
+      </div>
+      <div class="chart-wrapper fade-in fade-in-delay-1">
+        <h3>Distribution</h3>
+        <canvas id="sentimentPieChart"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+let sentimentChart, sentimentPieChart;
+document.getElementById('analyze-video-button').addEventListener('click', function() {
+  const url = document.getElementById('video-url').value;
+  if (!url.trim()) return;
+  fetch('/custom_analyze', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url }),
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.error) { alert(data.error); return; }
+    document.getElementById('result-section').style.display = 'grid';
+    const ctx1 = document.getElementById('sentimentChart').getContext('2d');
+    const ctx2 = document.getElementById('sentimentPieChart').getContext('2d');
+    const vals = [data.neg, data.neu, data.pos, data.compound];
+    if (sentimentChart) {
+      sentimentChart.data.datasets[0].data = vals;
+      sentimentChart.update();
+    } else {
+      sentimentChart = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['Negative', 'Neutral', 'Positive', 'Compound'],
+          datasets: [{
+            label: 'Score',
+            data: vals,
+            backgroundColor: ['rgba(239,68,68,0.6)', 'rgba(107,114,128,0.6)', 'rgba(34,197,94,0.6)', 'rgba(59,130,246,0.6)'],
+            borderColor: ['#ef4444', '#6b7280', '#22c55e', '#3b82f6'],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } }
+        }
+      });
+    }
+    const pieVals = [Math.abs(data.neg), data.neu, Math.abs(data.pos)];
+    if (sentimentPieChart) {
+      sentimentPieChart.data.datasets[0].data = pieVals;
+      sentimentPieChart.update();
+    } else {
+      sentimentPieChart = new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+          labels: ['Negative', 'Neutral', 'Positive'],
+          datasets: [{
+            data: pieVals,
+            backgroundColor: ['rgba(239,68,68,0.8)', 'rgba(107,114,128,0.8)', 'rgba(34,197,94,0.8)'],
+            borderColor: ['#ef4444', '#6b7280', '#22c55e'],
+            borderWidth: 2
+          }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#a0a0a0' } } } }
+      });
+    }
+  })
+  .catch(e => alert('Error: ' + e.message));
+});
+</script>
+{% endblock %}

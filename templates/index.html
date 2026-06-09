@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="fade-in">Sentiment Intelligence for Your Brand</h1>
+      <p class="fade-in fade-in-delay-1">
+        Pro-Perception analyzes millions of conversations across social media, YouTube, and text to give you
+        real-time brand sentiment intelligence. Make data-driven decisions with confidence.
+      </p>
+      <div class="hero-actions fade-in fade-in-delay-2">
+        <a href="{{ url_for('service') }}" class="btn btn-primary btn-lg">
+          Start Analyzing <i class="fas fa-arrow-right"></i>
+        </a>
+        <a href="{{ url_for('contact') }}" class="btn btn-secondary btn-lg">
+          Talk to Us
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual" style="overflow:hidden; border-radius: 20px; background: var(--bg-card); border: 1px solid var(--border); box-shadow: 0 0 80px var(--accent-glow);">
+    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=80" alt="Data analytics visualization" style="width:100%;height:100%;object-fit:cover;mix-blend-mode: luminosity;opacity:0.6;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg, rgba(10,10,10,0.6) 0%, transparent 100%);"></div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item fade-in">
+        <div class="stat-number gradient-text">10K+</div>
+        <div class="stat-label">Analyses Performed</div>
+      </div>
+      <div class="stat-item fade-in fade-in-delay-1">
+        <div class="stat-number gradient-text">99.9%</div>
+        <div class="stat-label">Analysis Accuracy</div>
+      </div>
+      <div class="stat-item fade-in fade-in-delay-2">
+        <div class="stat-number gradient-text">50ms</div>
+        <div class="stat-label">Average Response Time</div>
+      </div>
+      <div class="stat-item fade-in fade-in-delay-3">
+        <div class="stat-number gradient-text">4.9★</div>
+        <div class="stat-label">User Satisfaction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services Section -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-accent">Our Capabilities</span>
+      <h2>What We <span class="gradient-text">Provide</span></h2>
+      <p>Three powerful analysis tools to understand your brand perception across every channel.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card fade-in" style="overflow:hidden; position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:120px;overflow:hidden;border-radius:var(--radius) var(--radius) 0 0;opacity:0.15;">
+          <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&q=80" alt="" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="card-icon">
+          <i class="fas fa-message" style="font-size: 1.25rem;"></i>
+        </div>
+        <h3>Text Analysis</h3>
+        <p>Real-time sentiment analysis on any text input. Understand the emotional tone of customer reviews, social media posts, and feedback instantly.</p>
+        <p><strong style="color: var(--text-primary);">Technologies:</strong> VADER, TextBlob, NLTK</p>
+        <a href="{{ url_for('text') }}" class="card-link">
+          Try it now <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      <div class="card fade-in fade-in-delay-1" style="overflow:hidden; position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:140px;overflow:hidden;border-radius:var(--radius) var(--radius) 0 0;opacity:0.2;">
+          <img src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=600&q=80" alt="" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="card-icon">
+          <i class="fas fa-video" style="font-size: 1.25rem;"></i>
+        </div>
+        <h3>YouTube Analysis</h3>
+        <p>Extract and analyze sentiment from YouTube video transcripts. Know exactly how audiences feel about your video content.</p>
+        <p><strong style="color: var(--text-primary);">Technologies:</strong> YouTube Transcript API, TextBlob</p>
+        <a href="{{ url_for('youtube') }}" class="card-link">
+          Try it now <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      <div class="card fade-in fade-in-delay-2" style="overflow:hidden; position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:120px;overflow:hidden;border-radius:var(--radius) var(--radius) 0 0;opacity:0.15;">
+          <img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=600&q=80" alt="" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="card-icon">
+          <i class="fas fa-users" style="font-size: 1.25rem;"></i>
+        </div>
+        <h3>Social Media Monitor</h3>
+        <p>Monitor sentiment across Reddit communities in real-time. Track brand perception and emerging trends with advanced AI analysis.</p>
+        <p><strong style="color: var(--text-primary);">Technologies:</strong> PRAW (Reddit API), VADER</p>
+        <a href="{{ url_for('service') }}" class="card-link">
+          Try it now <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Industry Marquee -->
+<section class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="icon">◆</span> Technology</div>
+    <div class="marquee-item"><span class="icon">◆</span> Healthcare</div>
+    <div class="marquee-item"><span class="icon">◆</span> Finance</div>
+    <div class="marquee-item"><span class="icon">◆</span> Retail</div>
+    <div class="marquee-item"><span class="icon">◆</span> Entertainment</div>
+    <div class="marquee-item"><span class="icon">◆</span> Education</div>
+    <div class="marquee-item"><span class="icon">◆</span> Automotive</div>
+    <div class="marquee-item"><span class="icon">◆</span> Government</div>
+    <div class="marquee-item"><span class="icon">◆</span> Technology</div>
+    <div class="marquee-item"><span class="icon">◆</span> Healthcare</div>
+    <div class="marquee-item"><span class="icon">◆</span> Finance</div>
+    <div class="marquee-item"><span class="icon">◆</span> Retail</div>
+    <div class="marquee-item"><span class="icon">◆</span> Entertainment</div>
+    <div class="marquee-item"><span class="icon">◆</span> Education</div>
+    <div class="marquee-item"><span class="icon">◆</span> Automotive</div>
+    <div class="marquee-item"><span class="icon">◆</span> Government</div>
+  </div>
+</section>
+
+<!-- Split Section -->
+<section class="section">
+  <div class="container">
+    <div class="split">
+      <div class="split-content fade-in">
+        <span class="badge badge-accent">Why Pro-Perception</span>
+        <h2>Built for <span class="gradient-text">Impact</span></h2>
+        <p>
+          We combine state-of-the-art NLP models with real-time data processing to deliver
+          sentiment intelligence you can act on. From customer feedback to social media trends,
+          Pro-Perception gives you the complete picture.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-check-circle" style="color: var(--success);"></i>
+            <span style="color: var(--text-secondary);">Real-time multi-platform monitoring</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-check-circle" style="color: var(--success);"></i>
+            <span style="color: var(--text-secondary);">Advanced VADER + TextBlob analysis</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-check-circle" style="color: var(--success);"></i>
+            <span style="color: var(--text-secondary);">Beautiful interactive visualizations</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-check-circle" style="color: var(--success);"></i>
+            <span style="color: var(--text-secondary);">CSV export &amp; data persistence</span>
+          </div>
+        </div>
+      </div>
+      <div class="split-visual fade-in fade-in-delay-1">
+        <div class="visual-box" style="overflow:hidden; position:relative;">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Analytics dashboard" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;filter:brightness(0.7);">
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg, rgba(10,10,10,0.4) 0%, transparent 70%);"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- YouTube Section -->
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="split">
+      <div class="split-visual fade-in">
+        <div class="visual-box" style="overflow:hidden; position:relative;">
+          <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80" alt="Content creation setup" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;filter:brightness(0.6);">
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg, rgba(10,10,10,0.5) 0%, transparent 80%);"></div>
+        </div>
+      </div>
+      <div class="split-content fade-in fade-in-delay-1">
+        <span class="badge badge-accent">Extra Tool</span>
+        <h2>YouTube Video <span class="gradient-text">Sentiment Analysis</span></h2>
+        <p>
+          Have you ever wondered how viewers truly feel about a YouTube video? Our cutting-edge
+          analysis tool gives you unprecedented insights into the emotional impact of your content.
+        </p>
+        <a href="{{ url_for('youtube') }}" class="btn btn-primary">Analyze Videos</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

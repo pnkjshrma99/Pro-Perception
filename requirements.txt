@@ -1,0 +1,12 @@
+Flask==3.0.3
+python-dotenv==1.0.1
+gunicorn==23.0.0
+Flask-Bcrypt==1.0.1
+Flask-Login==0.6.3
+Flask-SQLAlchemy==3.1.1
+Flask-WTF==1.2.1
+nltk==3.8.1
+praw==7.7.1
+textblob==0.18.0.post0
+WTForms==3.1.2
+youtube-transcript-api==0.6.2
